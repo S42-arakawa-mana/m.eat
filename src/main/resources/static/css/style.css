@@ -44,10 +44,6 @@ form-control-file {
 }
 
 nav.navbar {
-  background-color: rgba(0, 0, 0, 0.5);
-  border: 1px solid transparent;
-  border-color: white;
-  border-width: 0 0 1px;
   margin-bottom: 20px;
   padding: 0;
 }
@@ -100,6 +96,11 @@ nav.navbar img {
 .topics-new-wrapper #description,
 .comments-new-wrapper #description {
   height: 80px;
+}
+
+.mybtn {
+  color: red;
+  border: 1px solid red;
 }
 
 .topics-index-wrapper {
