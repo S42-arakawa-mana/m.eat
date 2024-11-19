@@ -1,6 +1,9 @@
 package com.example.m.eat.controller;
 
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +22,9 @@ import com.example.m.eat.repository.UserRepository;
 
 @Controller
 public class UsersController {
+	
+	@Autowired
+	private MessageSource messageSource;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -33,7 +39,7 @@ public class UsersController {
 
 	@PostMapping("/user")
 	public String create(@Validated @ModelAttribute("form") UserForm form, BindingResult result, Model model,
-			RedirectAttributes redirAttrs) {
+			RedirectAttributes redirAttrs, Locale locale) {
 		String name = form.getName();
 		String email = form.getEmail();
 		String password = form.getPassword();
@@ -45,7 +51,7 @@ public class UsersController {
 		if (result.hasErrors()) {
 			model.addAttribute("hasMessage", true);
 			model.addAttribute("class", "alert-danger");
-			model.addAttribute("message", "ユーザー登録に失敗しました。");
+			model.addAttribute("message", messageSource.getMessage("users.create.flash.1",new String[] {}, locale));
 
 			return "users/new";
 		}
