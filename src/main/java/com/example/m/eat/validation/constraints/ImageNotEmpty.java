@@ -17,7 +17,7 @@ import jakarta.validation.ReportAsSingleViolation;
 @ReportAsSingleViolation
 public @interface ImageNotEmpty {
 
-	String message() default "{com.example.m.eat.validation.constraints.ImageNotEmpty.message}";
+	String message() default "{com.example.pictgram.validation.constraints.ImageNotEmpty.message}";
 
 	Class<?>[] groups() default {};
 

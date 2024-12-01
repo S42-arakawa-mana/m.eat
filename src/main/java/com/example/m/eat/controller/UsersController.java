@@ -22,7 +22,7 @@ import com.example.m.eat.repository.UserRepository;
 
 @Controller
 public class UsersController {
-	
+
 	@Autowired
 	private MessageSource messageSource;
 
@@ -45,16 +45,17 @@ public class UsersController {
 		String password = form.getPassword();
 
 		if (repository.findByUsername(email) != null) {
-			FieldError fieldError = new FieldError(result.getObjectName(), "email", "その E メールはすでに使用されています。");
+			FieldError fieldError = new FieldError(result.getObjectName(), "email",
+					messageSource.getMessage("users.create.error.1", new String[] {}, locale));
 			result.addError(fieldError);
 		}
 		if (result.hasErrors()) {
 			model.addAttribute("hasMessage", true);
 			model.addAttribute("class", "alert-danger");
-			model.addAttribute("message", messageSource.getMessage("users.create.flash.1",new String[] {}, locale));
-
+			model.addAttribute("message", messageSource.getMessage("users.create.flash.1", new String[] {}, locale));
 			return "users/new";
 		}
+
 		User entity = new User(email, name, passwordEncoder.encode(password), Authority.ROLE_USER);
 		repository.saveAndFlush(entity);
 
