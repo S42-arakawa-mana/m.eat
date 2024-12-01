@@ -9,5 +9,4 @@ import com.example.m.eat.entity.Topic;
 public interface TopicRepository extends JpaRepository<Topic, Long> {
 
 	List<Topic> findAllByOrderByUpdatedAtDesc();
-
 }

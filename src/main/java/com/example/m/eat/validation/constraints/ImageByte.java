@@ -17,7 +17,7 @@ import jakarta.validation.ReportAsSingleViolation;
 @ReportAsSingleViolation
 public @interface ImageByte {
 
-	String message() default "{com.example.m.eat.validation.constraints.ImageSize.message}";
+	String message() default "{com.example.pictgram.validation.constraints.ImageSize.message}";
 
 	Class<?>[] groups() default {};
 

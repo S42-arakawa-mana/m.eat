@@ -1,5 +1,7 @@
 package com.example.m.eat.validation.constraints;
 
+import java.util.Objects;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
@@ -24,7 +26,7 @@ public class PasswordEqualsValidator implements ConstraintValidator<PasswordEqua
 		BeanWrapper beanWrapper = new BeanWrapperImpl(value);
 		String field1Value = (String) beanWrapper.getPropertyValue(field1);
 		String field2Value = (String) beanWrapper.getPropertyValue(field2);
-		if ((field1Value.isEmpty() || field2Value.isEmpty()) || java.util.Objects.equals(field1Value, field2Value)) {
+		if ((field1Value.isEmpty() || field2Value.isEmpty()) || Objects.equals(field1Value, field2Value)) {
 			return true;
 		} else {
 			context.disableDefaultConstraintViolation();
@@ -32,4 +34,5 @@ public class PasswordEqualsValidator implements ConstraintValidator<PasswordEqua
 			return false;
 		}
 	}
+
 }

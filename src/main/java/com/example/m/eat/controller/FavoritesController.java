@@ -67,7 +67,7 @@ public class FavoritesController {
 			redirAttrs.addFlashAttribute("hasMessage", true);
 			redirAttrs.addFlashAttribute("class", "alert-info");
 			redirAttrs.addFlashAttribute("message",
-					messageSource.getMessage("favorites.crete.flash", new String[] {}, locale));
+					messageSource.getMessage("favorites.create.flash", new String[] {}, locale));
 		}
 
 		return "redirect:/topics";

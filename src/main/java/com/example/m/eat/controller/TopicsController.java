@@ -29,9 +29,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.m.eat.entity.Comment;
 import com.example.m.eat.entity.Favorite;
 import com.example.m.eat.entity.Topic;
 import com.example.m.eat.entity.UserInf;
+import com.example.m.eat.form.CommentForm;
 import com.example.m.eat.form.FavoriteForm;
 import com.example.m.eat.form.TopicForm;
 import com.example.m.eat.form.UserForm;
@@ -69,15 +71,16 @@ public class TopicsController {
 		model.addAttribute("list", list);
 
 		return "topics/index";
-
 	}
 
 	public TopicForm getTopic(UserInf user, Topic entity) throws FileNotFoundException, IOException {
 		modelMapper.getConfiguration().setAmbiguityIgnored(true);
 		modelMapper.typeMap(Topic.class, TopicForm.class).addMappings(mapper -> mapper.skip(TopicForm::setUser));
 		modelMapper.typeMap(Topic.class, TopicForm.class).addMappings(mapper -> mapper.skip(TopicForm::setFavorites));
-		modelMapper.typeMap(Favorite.class, FavoriteForm.class).addMappings(mapper -> mapper.skip(FavoriteForm::setTopic));
-		
+		modelMapper.typeMap(Topic.class, TopicForm.class).addMappings(mapper -> mapper.skip(TopicForm::setComments));
+		modelMapper.typeMap(Favorite.class, FavoriteForm.class)
+				.addMappings(mapper -> mapper.skip(FavoriteForm::setTopic));
+
 		boolean isImageLocal = false;
 		if (imageLocal != null) {
 			isImageLocal = new Boolean(imageLocal);
@@ -93,7 +96,7 @@ public class TopicsController {
 					os.write(indata, 0, size);
 				}
 				StringBuilder data = new StringBuilder();
-				data.append("data");
+				data.append("data:");
 				data.append(getMimeType(entity.getPath()));
 				data.append(";base64,");
 
@@ -104,7 +107,7 @@ public class TopicsController {
 
 		UserForm userForm = modelMapper.map(entity.getUser(), UserForm.class);
 		form.setUser(userForm);
-		
+
 		List<FavoriteForm> favorites = new ArrayList<FavoriteForm>();
 		for (Favorite favoriteEntity : entity.getFavorites()) {
 			FavoriteForm favorite = modelMapper.map(favoriteEntity, FavoriteForm.class);
@@ -113,11 +116,18 @@ public class TopicsController {
 				form.setFavorite(favorite);
 			}
 		}
-		
 		form.setFavorites(favorites);
 
-		return form;
+		List<CommentForm> comments = new ArrayList<CommentForm>();
 
+		for (Comment commentEntity : entity.getComments()) {
+
+			CommentForm comment = modelMapper.map(commentEntity, CommentForm.class);
+			comments.add(comment);
+		}
+		form.setComments(comments);
+
+		return form;
 	}
 
 	private String getMimeType(String path) {
@@ -126,7 +136,7 @@ public class TopicsController {
 		switch (extension) {
 		case "jpg":
 		case "jpeg":
-			mimeType += "jpag";
+			mimeType += "jpeg";
 			break;
 		case "png":
 			mimeType += "png";
@@ -183,7 +193,7 @@ public class TopicsController {
 	}
 
 	private File saveImageLocal(MultipartFile image, Topic entity) throws IOException {
-		File uploadDir = new File("uploads");
+		File uploadDir = new File("/uploads");
 		uploadDir.mkdir();
 
 		String uploadsDir = "/uploads/";
@@ -197,4 +207,5 @@ public class TopicsController {
 
 		return destFile;
 	}
+
 }
